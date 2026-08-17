@@ -1,0 +1,65 @@
+Assignment Notes
+ 
+Sheets Provided:
+ 1. County Lookup:
+ ○ Contains the names and a list of counties.
+ 2. Agent Lookup:
+ ○ Includes the names and details of sales agents, along with their relevant counties
+ of operation.
+ 3. Biochar Sales:
+ ○ Contains details about farmers who purchased biochar fertilizer.
+ ○ Note:The paid_today column records the payment amounts.
+ 4. Parasitoid Sales Orders:
+ ○ Includes details of customers who ordered parasitoids (natural enemies for Fall
+ Armyworm).
+ ○ Note:Each parasitoid card costs Kshs. 299. Use the order_amount column for
+ calculations.
+ 5. Parasitoids Payment:
+ ○ Contains payment amount details for parasitoid orders.
+ 
+Requirements:
+ 1. All Pivot Tables:
+ ○ Place all pivot tables in a single sheet named “pivot_table”.
+ ○ Saveandsubmit your Excel workbook via email to
+ brianotieno@plantvillage.ke.
+ ○ Usethefollowing file naming format: “your_name_excel_response”
+
+
+ Part 1: Biochar Fertilizer Sales Summary
+
+Develop a pivot table to summarize biochar fertilizer sales, showing the following:
+ 1. Metrics to Display:
+ ○ Total revenue expected from each agent. (10 points)
+ ○ Total revenue received from each agent. (10 points)
+ ○ Total biochar fertilizer bags sold by each agent. (10 points)
+ ○ Total remaining balance for each agent. (10 points)
+ 
+2. Grouping and Sorting:
+ ○ Group the data by county.
+ ○ Within each county, arrange the agents in order of sales, starting with the agent
+ with the highest expected revenue to the lowest. (3 points)
+ ○ Include subtotals below each county followed by a blank line. (5 points)
+ 
+3. Additional Notes:
+ ○ Provide a brief note summarizing any relevant observation from the pivot table.
+ (2 points)
+ 
+Part 2: Parasitoid Sales Summary
+ Develop a pivot table to summarize parasitoid sales, showing the following:
+ 1. Metrics to Display:
+ ○ Total revenue expected from each agent. (10 points)
+ ○ Total revenue received from each agent. (10 points)
+ ○ Total remaining balance for each agent. (10 points)
+ ○ Total parasitoid cards sold by each agent. (10 points)
+ 2. Grouping and Sorting:
+ ○ Group the data by county.
+ ○ Within each county, arrange the agents in order of sales, starting with the agent
+ with the highest expected revenue to the lowest. (3 points)
+ ○ Include subtotals below each county followed by a blank line. (5 points)
+ 
+3. Additional Notes:
+○ Provide a brief note summarizing any relevant observation from the pivot table.
+ (2 points)
+ What to Submit:
+ ● AcopyofyourExcel workbook.
+ ● File naming format: “your_name_excel_response”

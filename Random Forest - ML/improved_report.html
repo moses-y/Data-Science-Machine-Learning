@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crop Yield Prediction with Random Forest🌳 and Summarised Notes on RF With Transformers🤗</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .summary, .feature-importances {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤗Transforming AgriTech: Predictive Analytics in Agriculture with Random Forest (🌳) and Transformers(🤗) for NLP.</h1>
+    
+    <section>
+        <h2>Key Metrics: Our Random Forest (🌳) Model Performance using Bootstrapping and Ensemble Methods.</h2>
+        <ul>
+            <li>Avg RMSE: 0.8540281071004362</li>
+            <li>Avg R2 Score: 0.9921246516610146</li>
+        </ul>
+        <ul>
+            
+                <li>Random Forest with 50 Trees: RMSE = 0.8598030380565918, R2 = 0.9920180175887953</li>
+            
+                <li>Random Forest with 100 Trees: RMSE = 0.853748491044352, R2 = 0.9921300365756436</li>
+            
+                <li>Random Forest with 200 Trees: RMSE = 0.8485327922003649, R2 = 0.9922259008186051</li>
+            
+        </ul>
+    </section>
+        <h2>Plotting Feature Importances from the dataset with Crop Yield🌾 as our Target Variable.</h2>
+        
+        <div class="feature-importances">
+            <img src="feature_importances_50_trees.png" alt="Feature Importances">
+        </div>
+        
+        <div class="feature-importances">
+            <img src="feature_importances_100_trees.png" alt="Feature Importances">
+        </div>
+        
+        <div class="feature-importances">
+            <img src="feature_importances_200_trees.png" alt="Feature Importances">
+        </div>
+
+        <div class="feature-importances">
+            <img src="combined_feature_importances.png" alt="Feature Importances">
+        </div>
+        
+    </section>
+    
+    <section>
+        <h2>Mastering Random Forest(🌳) with the help of Transformers: Summaries from ALX and Explore-AI Data Science Course.</h2>
+        <p>LLM Model Spotlight: Fine-Tuned GPT-2. Using my previous Huggingface(🤗) & Transformers Project to summarise my notes. Further grounding my understanding of the popular "Attention Is All You Need" architecture, applied to the ALX Random Forest(🌳) module.</p>
+
+        
+        <div class="summary">
+            
+            <div align="center" style=" font-size: 80%; text-align: center; margin: 0 auto">
+<img src="https://raw.githubusercontent.com/Explore-AI/Pictures/master/Python-Notebook-Banners/Examples.png"  style="display: block; margin-left: auto; margin-right: auto;";/>
+</div>
+<p>Summary for markdown cell: </p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: # Examples: An introduction to random forests 
+© ExploreAI Academy</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: In this notebook, we look at a specific ensemble learning technique, the random forest. This algorithm is the combination of multiple decision trees. We'll examine how we can implement these models in Python using the `sklearn` library and also how random forests contribute to understanding the importance of predictive variables within a dataset.
+
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## Learning objectives
+                <ul>
+                    <li>* Understand how random forests differ from decision trees.</li>
+                    <li>* Understand the training process of random forests and how we can use them to make predictions.</li>
+                    <li>* Know how to build a random forest regression model.</li>
+                    <li>* Understand how to use random forests to assess predictive variable importance.</li>
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 1. Introduction to random forests
+
+### Overfitting in decision trees
+
+Overfitting is a risk when working with decision trees – it is easy for the tree to become too complex, and thus fit details of the individual data points rather than the overall properties of the distributions they are drawn from. 
+
+This issue can be addressed by using **random forests**. This</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### What is ensemble learning?
+
+Ensemble learning in machine learning is the practice of **combining multiple models** to try and achieve higher overall model performance. 
+
+In general, ensembles consist of multiple **heterogeneous or homogeneous** models trained on the same dataset. 
+
+Each of these models is used to make predictions using input (either exactly the same or samples out of the same data), then  **aggregated** across all models in some way (e.g. by taking the mean or having a weighted mean) to produce the final output. 
+
+The  **`random forest`** is an example of a commonly used ensemble model. </p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### What is a random forest?
+
+A random forest is a powerful non-parametric algorithm and an **ensemble** method **built on decision trees**, meaning that it relies on aggregating the results of an ensemble of decision trees. 
+
+The ensembled trees are **randomised** and the output is the **aggregated prediction** of the individual trees.
+
+*The mean prediction is used for a regression problem while classification problems use the mode of the ensembled trees as opposed to the mean.*</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 2. How do random forests work?
+
+### Fitting the data:
+
+Keep in mind that `N` refers to the **number of observations** (rows) in the training dataset, and `p` is the **number of predictor variables** (columns). The following is the typical algorithm for a random forest:
+
+1. **Bootstrapping**: Drawing *with replacement* from the training dataset, randomly sampled `N` observations.
+<br>
+
+2. Use the `N` observations to **grow a random forest tree** as follows:<br>
+_<br>
+At each node:<br>
+i. Select a random subset, `m`, of predictor variables, where $m<\sqrt{p}$.<br>
+ii. Pick the best variable/split-point among the selected predictor variables.<br>
+iii. Divide the data into two subsets based on the selected split.<br>
+iv. Repeat until the stopping criteria are satisfied (e.g. minimum node sample size reached)._
+<br>
+
+3. Repeat until the **desired number of random forest trees** is reached.
+
+Since we draw randomly with replacement from the training data during the bootstrapping step, it is possible that:
+- Some data **samples get resampled** and thus reused when fitting different trees in the random forest.
+- Some data **samples don't get sampled at all** and thus do not get used in fitting the random forest.
+
+This means that the **dataset each tree is grown on** is **slightly different**, so random forests are **less likely to overfit** than decision trees.
+</p>
+<img src="https://raw.githubusercontent.com/Explore-AI/Pictures/master/random_forest.png">
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Making predictions:
+
+Random forests **combine multiple trees to make a prediction** as follows:
+
+
+
+The somewhat surprising result with such ensemble methods is that the sum can be greater than the parts: that is, a majority vote among a number of estimators can end up being better than any of the individual estimators doing the voting! (An estimator is a tree.)</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 3. Building a random forest regression model
+
+Now that we have an understanding of how random forests work, let's **implement** one **using `scikit-learn`**.   
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Import libraries and data into</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler 
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: df = pd.read_csv("https://raw.githubusercontent.com/Explore-AI/Public-Data/master/house_price_by_area.csv")
+df.head()
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Plotting the data
+
+X = df["LotArea"] # independent variable 
+y = df["SalePrice"] # dependent variable 
+
+plt.scatter(X,y) # create scatter plot
+plt.title("House Price vs Area")
+plt.xlabel("Lot Area")
+plt.ylabel("Sale Price")
+plt.show()</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Preprocessing the</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # standardise features
+scaler = StandardScaler()
+# Convert to numpy array first to apply np.newaxis
+X_scaled = scaler.fit_transform(np.array(X)[:,np.newaxis])
+
+# Train test split
+x_train, x_test, y_train,y_test = train_test_split(X_scaled,y,test_size=0.2,random_state=6)
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Training
+
+This process of fitting a decision tree to our data can be done in `scikit-learn` with the ``RandomForestRegressor`` estimator:
+
+As with decision trees, random forests also have hyperparameters. Some of the more important ones include:
+
+- **n_estimators**: The number of trees to include in the forest.
+- **min_samples_leaf**: The minimum number of samples required to be at a leaf node.
+- **max_depth**: The maximum depth of each forest tree (i.e. the number of nodes between root and leaf node).
+- **random_state**: A number used to seed the random number generator. Ensures that we get the same tree each time we call model.fit() – _this particular hyperparameter is important in random forests since their training procedure is inherently random._
+- **criterion**: The function to measure the quality of a split. The model uses the mean squared error (MSE) by default.
+
+> To learn more about other RandomForestRegressor hyperparameters, run `help(RandomForestRegressor)` in a new cell.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: from sklearn.ensemble import RandomForestRegressor
+
+# Our forest consists of 100 trees with a max depth of 5 in this example
+RF = RandomForestRegressor(n_estimators=100, max_depth=5)
+RF.fit(x_train,y_train)
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Testing
+
+To evaluate the performance of our model, we can report the **mean squared error** or **plot** predicted output vs. expected output. The</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Get predictions
+y_pred = RF.predict(x_test)
+
+# Compute RMSE
+print("RMSE:",np.sqrt(mean_squared_error(y_test,y_pred)))</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Create figure and axes
+f, ax = plt.subplots(figsize=(5,5))
+
+# Plot actual vs. predicted values on axes
+ax.set_title('Actual vs Predicted')
+ax.set_xlabel('Actual')
+ax.set_ylabel('Predicted')
+ax.scatter(y_test,y_pred)
+ax.plot(y_test,y_test,'r')
+plt.show()</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Tuning model hyperparameters 
+
+In most cases, the default hyperparameter values do not offer the best model performance. In such cases, we have to **tune model hyperparameters** to **yield the best-performing model**.
+
+Let's make some changes to the `n_estimators` parameter and compare the results:
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: #### Training the various models:
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # 2 trees in forest
+forest_1 = RandomForestRegressor(n_estimators=15, max_depth=4, random_state=20)
+
+# 20 trees in forest
+forest_2 = RandomForestRegressor(n_estimators=25, max_depth=4, random_state=15)
+
+# 100 trees in forest
+forest_3 = RandomForestRegressor(n_estimators=35, max_depth=4, random_state=15)
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: forest_1.fit(x_train, y_train)</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: forest_2.fit(x_train, y_train)</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: forest_3.fit(x_train, y_train)</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: #### Let's evaluate the models:
+
+We calculate the RMSE for each model and plot the actual vs. predicted values:
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Create figure and axes
+f, ax = plt.subplots(figsize=(15,5), nrows=1, ncols=3,sharey=True)
+
+# Create list of titles and predictions to use in for loop
+pred = [forest_1.predict(x_test), forest_2.predict(x_test), forest_3.predict(x_test)]
+title = ['trees = 20', 'trees = 30', 'trees = 40']
+
+# Loop through all axes to plot each model's results 
+for i in range(3):
+    rmse = round(np.sqrt(mean_squared_error(pred[i],y_test)))
+    ax[i].set_title(title[i]+"  (RMSE: "+str(rmse)+ ")")
+    ax[i].set_xlabel('Actual')
+    ax[i].set_ylabel('Predicted')
+    ax[i].plot(y_test,y_test,'r')
+    ax[i].scatter(y_test,pred[i]) 
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Looking at the RMSEs, the forest with 20 trees performed the best. 
+
+> Can you find the optimal parameters (including `max_depth` and `min_samples_leaf`)? R</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 4. Assessing variable importance
+
+Knowing the **predictive power** – how different predictive variables affect the model's performance – can prove useful in cases where the dataset is large and high-dimensional. 
+
+It allows us to establish **which predictive variables we can discard** without significantly affecting the model's performance. Additionally, models that are presented with fewer predictor variables tend to train faster.  
+
+Unlike decision trees, random forests can be used to calculate a **measure of predictor variable importance**. 
+
+One way to compute this measure in the regression setting is to use the training data that was left out when constructing the random forest. Then the variable importance for a given variable can be calculated by:
+
+1. Keeping other variables the same.
+2. Shuffling the value of the variable in question.
+3. Calculating the percentage increase in MSE.  
+
+This way, **more important variables** will have **higher percentage increases** in the MSE.
+
+In sklearn's `RandomForestRegressor` we can easily obtain variable importances using:
+    `model.feature_importances_`
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 5. Advantages and disadvantages of random forests
+
+**Advantages:**
+
+* Less overfitting compared to a single decision tree (i.e. generalises much better).
+* Requires little data preparation – e.g. no real need to standardise features.
+* Extremely flexible and usually have high prediction accuracy.
+
+**Disadvantages**
+
+* Complex and not very intuitive.
+* Computation costs can be high if many trees are used.
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: #  
+
+<div align="center" style=" font-size: 80%; text-align: center; margin: 0 auto">
+<img src="https://raw.githubusercontent.com/Explore-AI/Pictures/master/ExploreAI_logos/EAI_Blue_Dark.png"  style="width:200px";/>
+</div>
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: <div align="center" style=" font-size: 80%; text-align: center; margin: 0 auto">
+<img src="https://raw.githubusercontent.com/Explore-AI/Pictures/master/Python-Notebook-Banners/Examples.png"  style="display: block; margin-left: auto; margin-right: auto;";/>
+</div></p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: # Examples: Solving a regression problem
+ 
+© ExploreAI Academy</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: In this train, we look at how to experiment with various modeling methods to solve a regression problem. We</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## Learning objectives
+
+By the end of this train, you should be able to:
+* Load and prepare a dataset.
+* Train and evaluate linear, non-linear and ensemble regression models.
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 1. Introduction
+
+We wish to examine and understand how socio-economic and environmental factors contribute to the rate of deforestation. We have been given a dataset that captures this information. Our goal to to model this relationship through regression analysis. 
+
+In the sections that follow, we explore the process of training and evaluating various regression models on a similar dataset. Through the model experimentation process, we are able to compare the performance of various models, guiding the selection of the best model for predicting our target variable. 
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 2. Dataset and libraries
+
+We begin by setting up our working environment by importing the necessary `Python` libraries that we will use throughout the notebook
+
+Then, we load and inspect the dataset to get familiar with its structure and contents.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import StackingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+from</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: data = pd.read_csv('https://raw.githubusercontent.com/Explore-AI/Public-Data/master/Data/regression_sprint/enviro_indicators.csv', index_col=0)
+data.head()</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 3. Data exploration
+
+Here, we will perform a preliminary exploration of our dataset to get a better understanding of the data we are working with.
+
+This initial exploration of our data, will help uncover underlying patterns and relationships that can inform our choice of models.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Displaying data information
+data.info()</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: `data.info()` gives us more information about our columns including their data types and the count of non-null values.
+
+It seems we do not have any null values in our dataset. Also, all the features in the dataset are numeric.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Let's now create a pairwise plot to visualise and understand the relationships among the variables. Using `sns.pairplot()`, we can generate scatter plots for each pair of variables in our dataset, providing a comprehensive overview of how each variable interacts with the others. This can help us identify patterns that may influence our modeling decisions. Additionally</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: sns.pairplot(data)
+plt.show()</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Only `forest coverage` and `biodiversity_index` show a linear-like relationship with the target variable `deforestation_rate`. This observation suggests the potential of these variables to be strong predictors in a linear regression model. The rest of the variables, however, do not demonstrate a clear linear trend. This indicates more complex relationships that might not be adequately captured by a linear model alone.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Next, we perform **correlation analysis** to understand the correlation between the different features present in our dataset and our target variable,`deforestation_rate`. We</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Calculating the correlation coefficients
+correlation_matrix = data.corr()
+correlation_with_target = correlation_matrix['deforestation_rate'].sort_values(ascending=False)
+
+# Display the correlations with the target variable
+print("Correlation of features with deforestation rate:\n", correlation_with_target)
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: We use the `.corr()` to calculate the correlation matrix for our dataset, then filtered the result to only contain the correlation coefficients related to the `deforestation_rate` column and sort them from the highest to the lowest. The results show that biodiversity_index, forest_coverage, population_density and protected_areas have some relationship with deforestation_rate. 
+
+This way, we we can identify strong predictors for `deforestation_rate`.
+
+**Note:** We need to consider both the positive and negative correlations, that is, the **highest positive** and the **highest negative values**. Alternatively, we can use `.abs` method to obtain the absolute values of the correlations, allowing us to sort them regardless of their direction.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Let's also plot a heatmap visualisation to further aid in understanding these relationships, highlighting the most significant correlations. This image makes it easy to also see relationship between the predictive variables, something that is good to keep in mind when doing regression analyses.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Heatmap of the correlation matrix
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix of Enviro Indicators')
+plt.show()</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 4. Data preprocessing
+
+We prepare the data for modeling by splitting it into training and testing sets and scaling the features to help our models perform optimally. This</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Separate the feature and target variables
+X = data.drop(['deforestation_rate'], axis=1)
+y = data['deforestation_rate']
+
+# Split the data into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+# Initialize and apply MinMaxScaler for scaling
+scaler = MinMaxScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: In the above code block, we prepare our features `X` and target variable `y` for modeling. The dataset is also split into training and testing sets, and feature scaling is applied using `MinMaxScaler`. This process ensures that our regression models do not bias towards variables with larger magnitudes.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## 5. Model training and evaluation
+
+### 5.1 Simple linear regression model
+
+Our journey into model training begins with a simple linear regression model. This model, while simple, serves as a great baseline to compare more complex models against. 
+
+A simple linear regression model uses only one independent variable to predict the dependent variable.
+
+From the correlation analysis we performed above, we observed that `biodiversity_index` had the strongest correlation with our target variable and also demonstrated a linear relationship. This makes it a good candidate as the predictor variable for our SLRM. </p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Preparing data for simple linear regression
+
+X_train_lr = pd.DataFrame(X_train_scaled, columns=X.columns)[['biodiversity_index']]
+X_test_lr = pd.DataFrame(X_test_scaled, columns=X.columns)[['biodiversity_index']]
+
+# Training the model
+model_lr = LinearRegression()
+model_lr.fit(X_train_lr, y_train)
+
+# Making predictions on the test data
+y_pred_lr = model_lr.predict(X_test_lr)
+
+# Evaluating the model
+print(f"R² Score: {r2_score(y_test, y_pred_lr)}")
+print(f"MSE: {mean_squared_error(y_test, y_pred_lr)}")</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Note that, we convert the scaled arrays back into DataFrames to maintain the ability to reference columns by name.
+
+Our simple linear regression model performed relatively well with an R-squared value above 0.7, but it could probably be improved on by adding a few more variables to the model. Let's see how this compares to the performance of other more complex models.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### 5.2 Other regression models for</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Let's expand our analysis by applying more complex models. Exploring these models will help us capture more complex patterns that a simple linear model might miss. This can, in turn, improve our model.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: #### A generic function for model training and evaluation:
+
+Let's develop a general function that we can use to train and test various regression models. This will enhance re-usability and reduce redundancy.
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: def train_and_evaluate_model(model):
+    
+    # Train the model on the scaled training data
+    model.fit(X_train_scaled, y_train)
+    
+    # Make predictions on the scaled test set
+    predictions = model.predict(X_test_scaled)
+    
+    # Evaluate the model
+    r2 = r2_score(y_test, predictions)
+    mse = mean_squared_error(y_test, predictions)
+    
+    return model, r2, mse</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: The `train_and_evaluate_model` function trains the provided model on the preprocessed and scaled training data, evaluates it against the test set, and returns the trained model along with its R² and Mean Squared Error (MSE) scores.
+
+**Note:** While using a generic function for model training and evaluation is a good idea for simplicity and efficiency, it may be limiting in some cases such as where the data or the importance of features varies across models. In such cases, we can train and evaluate each model separately to tailor the selection of features and fine-tune the model's performance to the specific characteristics of the data.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### 5.2.1 Multiple linear regression model
+
+We apply the previously defined function to train and evaluate a multiple linear regression model, where we use all available features (after scaling) to predict the rate of deforestation. This way, we get to leverage the predictive value of the rest of the features.
+
+We get to observe how a more complex linear approach compares to the simpler, single-variable linear regression.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Training and evaluating the multiple linear regression model
+linear_model, linear_r2, linear_mse = train_and_evaluate_model(LinearRegression())
+print(f"Linear regression - R²: {linear_r2}, MSE: {linear_mse}")</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: We can see that the model has performed better, given the increase in R2 score and a decrease in the MSE. It would be interesting to test this model with only the strongest predictors as well - it could be informative to assess whether there is a big drop in predictive power if we drop some of the weaker predictors. </p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### 5.2.2 Decision tree regression model
+
+We apply the previously defined function to train and evaluate a decision tree regression model. This allows us to explore the capabilities of a non-linear model in capturing the non-linear patterns we earlier observed in the data. We</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Training and evaluating the decision tree regression model
+tree_model, tree_r2, tree_mse = train_and_evaluate_model(DecisionTreeRegressor(random_state=42, max_depth=4))
+print(f"Decision tree regression - R²: {tree_r2}, MSE: {tree_mse}")</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: The decision tree does not perform as well as expected. It could be because there are several variables included that don't hold that much predictive power, or the fact that our tree has a max_depth parameter that was set to 4, which is quite shallow. Ideally, we should run multiple iterations of decision trees, with different parameters to determine the optimal fit.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### 5.3 Ensemble models
+
+We have so far only trained stand alone models. Here, we want to apply ensembling techniques where we combine multiple machine learning models in an attempt to improve predictive performance. Let's try out both a homogeneous and a heterogeneous ensemble model. The</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### 5.3.1 Random forest regression model
+
+We apply the previously defined function to train and evaluate a random forest regression model. It leverages the the power of homogenous ensemble learning by combining multiple decision trees. This</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Training and evaluating the random forest regression model
+forest_model, forest_r2, forest_mse = train_and_evaluate_model(RandomForestRegressor(random_state=20, max_depth=4))
+print(f"Random Forest Regression - R²: {forest_r2}, MSE: {forest_mse}")
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: We can see an improvement in the performance of our model. This is because random forests, by aggregating the predictions of numerous decision trees, reduce the risk of overfitting and offer a more generalisable model. Again, try testing it with different levels of max_depth to see what the outcomes are. 
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### 5.3.2 Stacking ensemble model.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: Let's also try and capitalise on the unique strengths of other different model types than just the decision trees. To be precise, we will apply stacking where we will train a meta-learner based on the outputs of some base models.
+
+We will use some of the models we have already trained as our base learners and a new model as the meta-learner.
+
+Let's start by defining our base models and the meta-learner:
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Define the base models: these are models that have already been trained
+base_models = [
+    ('linear_regression', linear_model),
+    ('random_forest', forest_model)
+]
+
+# Define the meta-learner
+final_estimator = LinearRegression()
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: We then apply our generic function to train and evaluate a stacking regression model.In</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Training and evaluating the stacking regression model
+stacking_model, stacking_r2, stacking_mse = train_and_evaluate_model(StackingRegressor(estimators=base_models, final_estimator=final_estimator, cv=5))
+print(f"Stacking Regression - R²: {stacking_r2}, MSE: {stacking_mse}")</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: We have used the `StackingRegressor` from `scikit-learn`, specifying our previously trained multiple linear regression, and random forest models as the base models and a linear regression model as the final estimator. 
+
+We note a marginal improvement in performance in comparison to the stand alone models, but should also consider whether the cost (in terms of time and memory), is worth the improvement in predictive powers. </p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: In our journey to solve a regression problem, we have explored different modeling options, each offering different strengths that could be used to solve the problem at hand. In the end, our goal is to achieve a good balance between performance and simplicity, and remember, more advanced models may not always be the best, despite convincing metrics!</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: #  
+
+<div align="center" style=" font-size: 80%; text-align: center; margin: 0 auto">
+<img src="https://raw.githubusercontent.com/Explore-AI/Pictures/master/ExploreAI_logos/EAI_Blue_Dark.png"  style="width:200px";/>
+</div>
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: <div align="center" style=" font-size: 80%; text-align: center; margin: 0 auto">
+<img src="https://raw.githubusercontent.com/Explore-AI/Pictures/master/Python-Notebook-Banners/Exercise.png"  style="display: block; margin-left: auto; margin-right: auto;";/>
+</div>
+
+# Exercise: The random forest
+© ExploreAI Academy
+
+In this exercise, we build, evaluate and compare random forest regression models. We</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## Learning objectives
+
+By the end of this train, you should be able to:
+* Build a random forest regression model in Python.
+* Experiment with different number of trees.
+* Evaluate feature importance using a random forest. 
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## Exercises
+
+In this exercise, we will be using the `Crop_yield` dataset that contains various factors that could influence the yield of a particular crop across different regions.
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Import libraries and dataset in</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score,</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Load dataset
+df= pd.read_csv("https://raw.githubusercontent.com/Explore-AI/Public-Data/master/Data/Python/Crop_yield.csv")
+df.head(5)
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Preparing the dataset
+
+In the code below, we prepare our dataset for modeling by encoding categorical variables to convert them to a numeric format. import</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Dummy Variable Encoding for categorical variables
+df_encoded = pd.get_dummies(df, drop_first=True)</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Exercise 1
+
+Create a function named `train_rf_model` to train and evaluate a random forest regression model on the encoded dataset. 
+
+The function should take in 3 parameters:
+- DataFrame containing the encoded features
+- A string containing the name of the target variable
+- The number of estimators for the random forest 
+
+It then returns: 
+- The trained model object 
+- The RMSE and R<sup>2</sup> scores of the model's performance on the test set. 
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Your solution here...
+
+def train_rf_model(df, target_var, n_estimators):
+    """
+    Trains a random forest regression model on the given dataset.
+
+    Parameters:
+    - df: DataFrame containing the encoded features.
+    - target_var: String containing the name of the target variable.
+    - n_estimators: The number of estimators for the random forest.
+
+    Returns:
+    - model: The trained random forest model object.
+    - rmse: The root mean squared error of the model on the test set.
+    - r2: The R^2 score of the model on the test set.
+    """
+
+    # Splitting the dataset into training and testing sets
+    X = df.drop(columns=[target_var])
+    y = df[target_var]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Initializing  and training the Random Forest Regression Model
+    model = RandomForestRegressor(n_estimators=n_estimators, random_state=42)
+    model.fit(X_train, y_train)
+
+    # Making predictions on the test set
+    y_pred = model.predict(X_test)
+
+    # Evaluating the model with RMSE and R2 score
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+    r2 = r2_score(y_test, y_pred)
+
+    return model, {'RMSE': rmse, 'R2': r2}</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Exercise 2
+
+Use the function you have defined in **Exercise 1** to train and evaluate three different random forest regression models with each having the following number of estimators respectively: `50`, `100`, and `200`. Store the results in a dictionary.
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Your solution here...
+target_var = 'Yield'
+
+# Define the numbers of estimators to evaluate
+n_estimators_list = [50, 100, 200]
+
+# Train the models and store the results using a dictionary comprehension
+
+results = {
+    n_estimators: train_rf_model(df_encoded, target_var, n_estimators)[1] # [1] to get only the performance metrics
+    for n_estimators in n_estimators_list
+}
+
+# Display the results using a list comprehension for formatting the results
+
+[print(f"Model with {n} estimators: RMSE = {metrics['RMSE']:.3f}, R2 = {metrics['R2']:3f}") for n, metrics in results.items()]</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Exercise 3
+
+Say we wish to understand which features have the most impact on crop yield predictions.
+
+Use the `feature_importances_` attribute from our lastly trained random forest model in **Exercise 2** to return a series containing the feature importance score for each of the features in our dataset, sorted in descending order. 
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Your solution here...
+
+# Extract feature names
+feature_names = df_encoded.drop(columns=[target_var]).columns
+
+# Extract feature importance scores from the trained model
+feature_importances = model.feature_importances_
+
+# Create a Series for better visualization and sorting of importances
+importance_series = pd.Series(feature_importances, index=feature_names)
+
+# Sort the series in descending order to see the most important features at the top
+sorted_importance_series = importance_series.sort_values(ascending=False)
+
+print("Feature Importances:")
+print(sorted_importance_series[:10])  # Print the top 10 features with highest importance scores</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ## Solutions for</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Exercise 1.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: def train_rf_model(data, target_variable, n_estimators):
+
+    # Splitting the dataset into features and target variable
+    X = data.drop(target_variable, axis=1)  # Features
+    y = data[target_variable]  # Target variable
+
+    # Splitting the dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Initializing the RandomForestRegressor with n_estimators
+    rf_model = RandomForestRegressor(n_estimators=n_estimators, random_state=42)
+
+    # Training the model on the training set
+    rf_model.fit(X_train, y_train)
+
+    # Making predictions on the test set
+    y_pred = rf_model.predict(X_test)
+
+    # Evaluating the model
+    mse = metrics.mean_squared_error(y_test, y_pred)  # Setting squared=False returns the RMSE
+    r2 = metrics.r2_score(y_test, y_pred)
+    
+    # Return the trained model and its performance metrics
+    return rf_model, {'MSE': mse, 'R2': r2}
+
+</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: The function `train_rf_model` is designed to train and evaluate a random forest regression model. 
+
+It takes 3 parameters, `data`, `target_variable`, `n_estimators`.
+
+The function returns two items: the trained random forest model `rf_model` and a dictionary containing the evaluation metrics, `mse` and `r2`.
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Exercise 2 of</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Number of estimators to evaluate
+estimators_list = [50, 100, 200]
+
+# Dictionary to store results
+results = {}
+
+# Train and evaluate models with different numbers of estimators
+for n in estimators_list:
+    # Store the entire returned dictionary as the value for each key
+    model, metric = train_rf_model(df_encoded, 'Yield', n)
+    results[f"{n} trees"] = metric
+    
+results[</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: In the code above, we use the previously created function to train and evaluate multiple random forest models, each with a different number of trees (estimators). 
+
+The for loop iterates over each value in `estimators_list`, where it calls the `train_rf_model()` function, passing the required parameters including the current number of estimators `n` as arguments.
+
+The two items returned by the function are stored in separate variables, `model` and `metric`.
+
+The `results` dictionary is then used to store the evaluation metrics for each model trained with a different number of trees. The keys are strings indicating the number of trees, and the values are the dictionary of metrics returned by the function.
+</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: ### Exercise 3 for</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <pre>Summary for code cell: # Extract feature importances from the model
+feature_importances = model.feature_importances_
+
+# Get the names of the features, excluding the target variable 'Yield'
+feature_names =df_encoded.drop('Yield', axis=1).columns
+
+# Create a pandas Series 
+importances = pd.Series(feature_importances, index=feature_names)
+
+# Sort the feature importances in descending order
+sorted_importances = importances.sort_values(ascending=False)
+sorted_importances_</pre>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: In the code above, we use the `feature_importances_` attribute of the trained random forest model to extract the importance scores for each feature. 
+
+The variable `feature_names` stores the list of feature names that were used to train the model. This will be used for mapping each importance score to its corresponding feature name.
+
+`importances` is a pandas series object where each feature's importance score is associated with its name. 
+
+In `sorted_importances`, we get the importances sorted in descending order to get a quick view of the features considered most important by the model. </p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: > Which top 2 features contribute the most to the model's predictive ability?
+
+Understanding feature importance and the contribution of each variable to the model's predictions offers us an opportunity to streamline our models. This understanding enables us to focus on the most influential features, thereby reducing model complexity without significantly sacrificing performance.
+
+In refining your model, you should consider an experiment: retrain the model using only the subset of features that have demonstrated the highest importance scores. This encourages an exploration into how much we can reduce complexity while maintaining, or even potentially improving, model accuracy.</p>
+            
+        </div>
+        
+        <div class="summary">
+            
+            <p>Summary for markdown cell: <div align="center" style=" font-size: 80%; text-align: center; margin: 0 auto">
+<img src="https://raw.githubusercontent.com/Explore-AI/Pictures/master/ExploreAI_logos/EAI_Blue_Dark.png"  style="width:200px";/>
+</div>
+</p>
+            
+        </div>
+        
+    </section>
+</body>
+</html>

@@ -1,0 +1,234 @@
+PS D:\Patience ML Project> python inspect_data.py
+First 5 rows of the dataset:
+   Age Attrition     BusinessTravel  ...  YearsInCurrentRole YearsSinceLastPromotion  YearsWithCurrManager
+0   41       Yes      Travel_Rarely  ...                   4                       0                     5
+1   49        No  Travel_Frequently  ...                   7                       1                     7
+2   37       Yes      Travel_Rarely  ...                   0                       0                     0
+3   33        No  Travel_Frequently  ...                   7                       3                     0
+4   27        No      Travel_Rarely  ...                   2                       2                     2
+
+[5 rows x 35 columns]
+
+Column names and data types:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 1470 entries, 0 to 1469
+Data columns (total 35 columns):
+ #   Column                    Non-Null Count  Dtype
+---  ------                    --------------  -----
+ 0   Age                       1470 non-null   int64
+ 1   Attrition                 1470 non-null   object
+ 2   BusinessTravel            1470 non-null   object
+ 3   DailyRate                 1470 non-null   int64
+ 4   Department                1470 non-null   object
+ 5   DistanceFromHome          1470 non-null   int64
+ 6   Education                 1470 non-null   int64
+ 7   EducationField            1470 non-null   object
+ 8   EmployeeCount             1470 non-null   int64
+ 9   EmployeeNumber            1470 non-null   int64
+ 10  EnvironmentSatisfaction   1470 non-null   int64
+ 11  Gender                    1470 non-null   object
+ 12  HourlyRate                1470 non-null   int64
+ 13  JobInvolvement            1470 non-null   int64
+ 14  JobLevel                  1470 non-null   int64
+ 15  JobRole                   1470 non-null   object
+ 16  JobSatisfaction           1470 non-null   int64
+ 17  MaritalStatus             1470 non-null   object
+ 18  MonthlyIncome             1470 non-null   int64
+ 19  MonthlyRate               1470 non-null   int64
+ 20  NumCompaniesWorked        1470 non-null   int64
+ 21  Over18                    1470 non-null   object
+ 22  OverTime                  1470 non-null   object
+ 23  PercentSalaryHike         1470 non-null   int64
+ 24  PerformanceRating         1470 non-null   int64
+ 25  RelationshipSatisfaction  1470 non-null   int64
+ 26  StandardHours             1470 non-null   int64
+ 27  StockOptionLevel          1470 non-null   int64
+ 28  TotalWorkingYears         1470 non-null   int64
+ 29  TrainingTimesLastYear     1470 non-null   int64
+ 30  WorkLifeBalance           1470 non-null   int64
+ 31  YearsAtCompany            1470 non-null   int64
+ 32  YearsInCurrentRole        1470 non-null   int64
+ 33  YearsSinceLastPromotion   1470 non-null   int64
+ 34  YearsWithCurrManager      1470 non-null   int64
+dtypes: int64(26), object(9)
+memory usage: 402.1+ KB
+None
+PS D:\Patience ML Project> python ml_pipeline.py
+1. Loading data...
+Data loaded successfully. Shape: (1470, 35)
+
+2. Initial EDA & Feature Dropping...
+Target variable 'Attrition' converted to numeric.
+ - Dropping identifier column: EmployeeNumber
+ - Dropping constant column: EmployeeCount
+ - Dropping constant column: StandardHours
+ - Dropping constant column: Over18
+Columns dropped. New shape: (1470, 31)
+
+3. Preprocessing...
+ - Numerical features: 23
+ - Categorical features: 7
+ - Data split into train/test sets. Train shape: (1176, 30), Test shape: (294, 30)
+ - Preprocessing complete. Number of features after encoding: 51
+ - Preprocessor (scaler & encoder) saved to scaler.joblib
+ - Original columns list saved to model_columns.joblib
+
+4. Model Training (Logistic Regression)...
+ - Model training complete.
+
+5. Model Evaluation...
+ - Accuracy: 0.8605
+ - Confusion Matrix:
+[[237  10]
+ [ 31  16]]
+ - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.88      0.96      0.92       247
+           1       0.62      0.34      0.44        47
+
+    accuracy                           0.86       294
+   macro avg       0.75      0.65      0.68       294
+weighted avg       0.84      0.86      0.84       294
+
+
+6. Model Saving...
+ - Trained model saved to attrition_model.joblib
+
+--- ML Pipeline Complete ---
+PS D:\Patience ML Project> python inspect_sheets.py
+Sheet names: ['WA_Fn-UseC_-HR-Employee-Attriti', 'Data Definitions']
+
+Reading definitions from sheet: 'Data Definitions'
+
+--- Data Definitions ---
+- nan: nan
+- nan: nan
+- Education: 1 'Below College'
+- nan: 2 'College'
+- nan: 3 'Bachelor'
+- nan: 4 'Master'
+- nan: 5 'Doctor'
+- nan: nan
+- EnvironmentSatisfaction: 1 'Low'
+- nan: 2 'Medium'
+- nan: 3 'High'
+- nan: 4 'Very High'
+- nan: nan
+- JobInvolvement: 1 'Low'
+- nan: 2 'Medium'
+- nan: 3 'High'
+- nan: 4 'Very High'
+- nan: nan
+- JobSatisfaction: 1 'Low'
+- nan: 2 'Medium'
+- nan: 3 'High'
+- nan: 4 'Very High'
+- nan: nan
+- PerformanceRating: 1 'Low'
+- nan: 2 'Good'
+- nan: 3 'Excellent'
+- nan: 4 'Outstanding'
+- nan: nan
+- RelationshipSatisfaction: 1 'Low'
+- nan: 2 'Medium'
+- nan: 3 'High'
+- nan: 4 'Very High'
+- nan: nan
+- WorkLifeBalance: 1 'Bad'
+- nan: 2 'Good'
+- nan: 3 'Better'
+- nan: 4 'Best'
+--- End Definitions ---
+PS D:\Patience ML Project> python ml_pipeline_v2.py
+AppData\Local\Programs\Python\Python311\Lib\site-packages\xgboost\sklearn.py:1395: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+1. Loading data...
+Data loaded successfully from sheet 'WA_Fn-UseC_-HR-Employee-Attriti'. Shape: (1470, 35)
+
+2. Initial EDA & Feature Dropping...
+Target variable 'Attrition' converted to numeric.
+ - Dropping identifier column: EmployeeNumber
+ - Dropping constant column: EmployeeCount
+ - Dropping constant column: StandardHours
+ - Dropping constant column: Over18
+Columns dropped. New shape: (1470, 31)
+
+3. Preprocessing...
+ - Numerical features identified: 14
+ - Categorical features identified (incl. ordinal): 16
+ - Data split into train/test sets. Train shape: (1176, 30), Test shape: (294, 30)
+ - Applying preprocessing (fitting on train data)...
+ - Transforming test data...
+ - Preprocessing complete. Number of features after encoding: 78
+ - Preprocessor saved to preprocessor.joblib
+ - Original columns list saved to model_columns.joblib
+AppData\Local\Programs\Python\Python311\Lib\site-packages\xgboost\sklearn.py:1395: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+ - Calculated scale_pos_weight for XGBoost: 5.19
+
+4. Model Training & Evaluation...
+
+--- Training LogisticRegression ---
+--- Evaluating LogisticRegression ---
+ - Accuracy: 0.8027
+ - F1 Score (Class 1): 0.5397
+ - Confusion Matrix:
+[[202  45]
+ [ 13  34]]
+ - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.94      0.82      0.87       247
+           1       0.43      0.72      0.54        47
+
+    accuracy                           0.80       294
+   macro avg       0.68      0.77      0.71       294
+weighted avg       0.86      0.80      0.82       294
+
+
+--- Training RandomForest ---
+--- Evaluating RandomForest ---
+ - Accuracy: 0.8503
+ - F1 Score (Class 1): 0.1538
+ - Confusion Matrix:
+[[246   1]
+ [ 43   4]]
+ - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.85      1.00      0.92       247
+           1       0.80      0.09      0.15        47
+
+    accuracy                           0.85       294
+   macro avg       0.83      0.54      0.54       294
+weighted avg       0.84      0.85      0.80       294
+
+
+--- Training XGBoost ---
+--- Evaluating XGBoost ---
+ - Accuracy: 0.8673
+ - F1 Score (Class 1): 0.4179
+ - Confusion Matrix:
+[[241   6]
+ [ 33  14]]
+ - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.88      0.98      0.93       247
+           1       0.70      0.30      0.42        47
+
+    accuracy                           0.87       294
+   macro avg       0.79      0.64      0.67       294
+weighted avg       0.85      0.87      0.84       294
+
+
+--- Model Comparison ---
+Model                | Accuracy   | F1 Score (Class 1)
+-------------------------------------------------------
+LogisticRegression   | 0.8027    | 0.5397
+RandomForest         | 0.8503    | 0.1538
+XGBoost              | 0.8673    | 0.4179
+
+5. Best Model Saving...
+ - Best model (LogisticRegression with F1 Score 0.5397) saved to best_attrition_model.joblib

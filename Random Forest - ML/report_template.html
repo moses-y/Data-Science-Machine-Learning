@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ project_name }} Analysis Report</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .summary, .feature-importances {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+        }
+        .feature-importances-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            overflow: auto;
+        }
+        code {
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ project_name }} Analysis </h1>
+
+    <!-- Introduction Section -->
+    <section>
+        <h2>Introduction</h2>
+        <p>{{ introduction }}</p>
+    </section>
+
+    <!-- Libraries at the Core Section -->
+    <section>
+        <h2>Libraries at the Core</h2>
+        <p>{{ libraries_core }}</p>
+    </section>
+
+    <!-- Optimized Functions and Workflow Section -->
+    <section>
+        <h2>Optimized Functions and Workflow</h2>
+        <p>{{ optimized_functions_workflow }}</p>
+    </section>
+
+    <!-- Model Performance Section -->
+    <section>
+        <h2>Model Performance</h2>
+        <ul>
+            <li>Avg RMSE: {{ avg_rmse }}</li>
+            <li>Avg R2 Score: {{ avg_r2 }}</li>
+        </ul>
+        <ul>
+            {% for model in models_data %}
+                <li>{{ model.model_name }}: RMSE = {{ model.rmse }}, R2 = {{ model.r2 }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Feature Importances Section -->
+    <section>
+        <h2>Feature Importances</h2>
+        <div class="feature-importances-container">
+            {% for image_path in feature_importance_images %}
+            <div class="feature-importances">
+                <img src="{{ image_path }}" alt="Feature Importances">
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Notebook Analysis Summary Section -->
+    <section>
+        <h2>Notebook Analysis Summary</h2>
+        {% for summary in global_summaries %}
+        <div class="summary">
+            {% if summary.type == 'markdown' %}
+            <div>{{ summary.summary|markdown_to_html|safe }}</div>
+            {% elif summary.type == 'code' %}
+            <pre><code class="language-python">{{ summary.summary }}</code></pre>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Conclusion Section -->
+    <section>
+        <h2>Conclusion</h2>
+        <p>{{ conclusion }}</p>
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+PS D:\Patience ML Project> python part_b_clustering.py
+--- 1. Loading Data from Part_B_Dataset.csv ---
+Dataset loaded successfully.
+Initial data shape: (30000, 14)
+Columns: ['customer', 'order', 'total_items', 'discount%', 'weekday', 'hour', 'Food%', 'Fresh%', 'Drinks%', 'Home%', 'Beauty%', 'Health%', 'Baby%', 'Pets%']
+
+--- 2. Data Exploration & Preprocessing ---
+
+Data Info:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 30000 entries, 0 to 29999
+Data columns (total 14 columns):
+ #   Column       Non-Null Count  Dtype
+---  ------       --------------  -----
+ 0   customer     30000 non-null  int64
+ 1   order        30000 non-null  int64
+ 2   total_items  30000 non-null  int64
+ 3   discount%    30000 non-null  float64
+ 4   weekday      30000 non-null  int64
+ 5   hour         30000 non-null  int64
+ 6   Food%        30000 non-null  float64
+ 7   Fresh%       30000 non-null  float64
+ 8   Drinks%      30000 non-null  float64
+ 9   Home%        30000 non-null  float64
+ 10  Beauty%      30000 non-null  float64
+ 11  Health%      30000 non-null  float64
+ 12  Baby%        30000 non-null  float64
+ 13  Pets%        30000 non-null  float64
+dtypes: float64(9), int64(5)
+memory usage: 3.2 MB
+
+Missing values check:
+customer       0
+order          0
+total_items    0
+discount%      0
+weekday        0
+hour           0
+Food%          0
+Fresh%         0
+Drinks%        0
+Home%          0
+Beauty%        0
+Health%        0
+Baby%          0
+Pets%          0
+dtype: int64
+
+Scaling features using StandardScaler...
+Scaling complete.
+Scaled Data Head:
+    total_items  discount%   weekday      hour     Food%  ...     Home%   Beauty%   Health%     Baby%     Pets%
+0     0.644436   1.026438  0.168536 -0.355900 -0.649206  ... -0.758520 -0.421037 -0.213462 -0.448511 -0.168368
+1     0.304238  -0.509574  0.639791 -0.355900 -0.354079  ... -0.639753 -0.421037 -0.213462 -0.448511 -0.168368
+2     0.936034   0.677824  0.168536 -0.355900 -0.307577  ...  0.164730  0.045516 -0.213462 -0.448511 -0.168368
+3     1.227633   0.567254 -1.245227 -0.530819  0.241700  ... -0.499697 -0.215982  2.786049 -0.448511 -0.168368
+4     1.033234   0.694023 -0.773973 -0.705737  0.026225  ... -0.326027 -0.421037 -0.213462 -0.448511 -0.168368
+
+[5 rows x 12 columns]
+
+--- 3. Evaluating Clustering Algorithms (k=2 to 10) ---
+
+Evaluating K-Means...
+  K-Means (k=2): Silhouette Score = 0.1288
+  K-Means (k=3): Silhouette Score = 0.1292
+  K-Means (k=4): Silhouette Score = 0.1591
+  K-Means (k=5): Silhouette Score = 0.1642
+  K-Means (k=6): Silhouette Score = 0.1724
+  K-Means (k=7): Silhouette Score = 0.1846
+  K-Means (k=8): Silhouette Score = 0.1909
+  K-Means (k=9): Silhouette Score = 0.1958
+  K-Means (k=10): Silhouette Score = 0.1921
+Elbow curve plot saved as elbow_curve.png
+
+Evaluating Agglomerative Clustering...
+  Agglomerative (k=2): Silhouette Score = 0.1164
+  Agglomerative (k=3): Silhouette Score = 0.1372
+  Agglomerative (k=4): Silhouette Score = 0.0950
+  Agglomerative (k=5): Silhouette Score = 0.1109
+  Agglomerative (k=6): Silhouette Score = 0.1179
+  Agglomerative (k=7): Silhouette Score = 0.1313
+  Agglomerative (k=8): Silhouette Score = 0.1382
+  Agglomerative (k=9): Silhouette Score = 0.1321
+  Agglomerative (k=10): Silhouette Score = 0.1241
+
+Evaluating DBSCAN...
+  DBSCAN (eps=0.5): Found 140 clusters and 26392 noise points.
+    Silhouette Score (excluding noise): 0.0440
+  DBSCAN (eps=1.0): Found 46 clusters and 6355 noise points.
+    Silhouette Score (excluding noise): -0.3287
+  DBSCAN (eps=1.5): Found 15 clusters and 1119 noise points.
+    Silhouette Score (excluding noise): 0.0852
+  DBSCAN (eps=2.0): Found 4 clusters and 210 noise points.
+    Silhouette Score (excluding noise): 0.6955
+
+--- 4. Selecting Best Model based on Silhouette Score ---
+Best K-Means: k=9, Score=0.1958
+Best Agglomerative: k=8, Score=0.1382
+Best DBSCAN: Params='eps=2.0', Score=0.6955
+Considering DBSCAN (Manual review recommended due to noise/params)
+
+Selected Best Algorithm: KMeans
+Selected Optimal k: 9
+Best Silhouette Score: 0.1958
+Parameters: {'n_clusters': 9, 'init': 'k-means++', 'n_init': 10, 'random_state': 42}
+
+--- 5. Training Final Model and Assigning Clusters ---
+
+Data clustered into 9 clusters (excluding noise if any).
+Cluster distribution:
+cluster
+1    8419
+3    7862
+0    4451
+2    3830
+8    3331
+6     646
+7     629
+4     513
+5     319
+Name: count, dtype: int64
+
+--- 6. Cluster Profiles (Mean Values for KMeans) ---
+         total_items  discount%   weekday       hour  ...    Beauty%    Health%      Baby%      Pets%
+cluster                                               ...
+0          24.316783   5.671822  3.509324  14.452483  ...   3.061991   0.313929   2.823669   0.437007       
+1          39.414420   5.364719  3.697114  15.339589  ...   3.529289   0.572582   2.639256   0.587325       
+2          26.738381  12.283632  3.649869  14.789295  ...   6.343211   0.566721   4.652554   0.495554       
+3          39.632027   6.312352  3.641313  15.275630  ...   5.264312   0.625916   3.729116   0.661566       
+4          46.066277  93.588713  3.596491  15.272904  ...   0.496199   0.081676   0.367973   0.140019       
+5          20.811912   7.925674  3.573668  14.789969  ...   3.390721   0.542790   2.399467  49.665549       
+6           8.911765   9.315960  3.188854  13.738390  ...  83.537307   0.445820   1.204164   0.193576       
+7          23.494436   5.542353  3.732909  14.518283  ...   7.388315  30.103180   6.494563   0.864976       
+8          14.209847   7.966506  3.760132  15.090964  ...   2.346268   0.372696  73.593975   0.215953       
+
+[9 rows x 12 columns]
+
+--- 7. Generating Silhouette Plot for KMeans (k=9) ---
+AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\utils\validation.py:2739: UserWarning: X does not have valid feature names, but KMeans was fitted with feature names
+  warnings.warn(
+Silhouette plot saved as silhouette_plot.png
+
+--- 8. Saving Scaler and Final Model ---
+Scaler saved to scaler_part_b.joblib
+Final clustering model (KMeans) saved to clustering_model_part_b.joblib
+
+--- Analysis Complete ---
+Best algorithm selected: KMeans
+Scaler saved: scaler_part_b.joblib
+Model saved: clustering_model_part_b.joblib
+Review plots and cluster profiles for insights.
+PS D:\Patience ML Project>

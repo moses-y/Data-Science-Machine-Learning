@@ -1,0 +1,24 @@
+SQLInstructions
+ Files Provided:
+ 1. County Lookup (CSV file)
+ 2. Agent Lookup (CSV file)
+ 3. Biochar Sales (CSV file)
+ Requirements:
+ 1. Database Setup:
+ ○ Create the following tables in one of the following RDBMS (MySQL or
+ PostgreSQL):
+ ■ county_lookup
+ ■ agent_lookup
+ ■ biochar_sales
+ ○ Importthe provided CSV files into these tables.
+ ○ Proofof tables created and data imported will earn you 50 points.
+ 2. Write a Query:
+ ○ After creating and importing the tables, write an SQL query to produce a single
+ table that includes the following details:
+ ■ Numberofbiochar bags sold per agent (5 points)
+ ■ Total revenue expected per agent (5 points)
+ ■ Total revenue received per agent (5 points)
+ ■ Remaining balance per agent (5 points)
+ ○ Alldata should be categorized by county and arranged in descending order
+ based on the number of biochar bags sold (10 points).
+ ○ Showsubtotals per county and also the final grand total (20 points).

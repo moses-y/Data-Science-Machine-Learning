@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: mypackage
+Version: 0.1
+Summary: EDSA exaple python package
+Home-page: <https://github.com/<moses-y>/<package-name>
+Author: <Moses Yebei>
+Author-email: <mosesmy@hotmail.com>
+License: MIT
+
+# mypackage
+This library was created as an example of how to publish pyhton packages

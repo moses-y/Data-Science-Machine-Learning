@@ -1,0 +1,70 @@
+# Secrets — never commit
+.env
+**/.env
+*.key
+*.pem
+credentials.json
+
+# Virtual environments
+venv/
+.venv/
+env/
+*_env/
+
+# Caches
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+fastf1_cache/
+.cache/
+
+# Archives, installers, binaries — not source
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.gz
+*.exe
+*.msi
+
+# Databases and model blobs — regenerate from the notebooks
+*.db
+*.sqlite
+*.sqlite3
+*.pkl
+*.joblib
+*.h5
+*.keras
+*.pt
+*.pth
+*.onnx
+*.ff1pkl
+
+# Media
+*.mp4
+*.mov
+*.avi
+*.wav
+*.m4a
+*.mp3
+
+# Editor
+.vscode/
+.idea/
+
+# Third-party course material (textbooks, slides, workbooks) — not my work,
+# and not ours to redistribute. Notebooks and code are kept.
+*.pdf
+*.pptx
+*.docx
+*.xlsx
+*.xls
+*.pbix
+*.sql
+
+# Generated Plotly HTML exports — each bundles ~3.5MB of plotly.js.
+# The notebooks in the same folder regenerate them.
+BI Analyst Case study/notebooks/*.html

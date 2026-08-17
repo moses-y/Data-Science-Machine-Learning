@@ -1,0 +1,141 @@
+[
+
+[
+
+[
+
+[
+
+[
+
+ff
+
+[
+
+[
+
+[
+
+[ 5] 9.@e-1e.
+[ 5] 2¢.e0-41.
+[ 5] 21.¢0-22.
+[ 5] 12.¢0-23.
+{ 5] 13.¢0-14.
+{ 5] 14.00-45.
+[ 5] 45.e0-16.
+[ 5] 16.¢0-27.
+[ 5] 47.¢0+18.
+{ 5] 19¢.@0-19.
+[ 5] 19.¢0-2e.
+[ 5] 2@:¢0-22.
+[ 5] 22.¢0-22.
+[ 5] 22.¢e+23.
+[ 5] 23.¢0-24.
+[ 5] 24.¢0-25.
+[
+
+[
+
+[
+
+[
+
+[
+
+[ ID] Interval
+
+[ 5] .@.¢0-3e.
+[Sum] @.0-30.1
+if
+
+“nerf Done:
+
+5] 6.00-30.
+
+-08-8.68
+-00-9.98
+
+Transfer Bitrate Jitter
+sec 1.93: MBytes. 16.2 Mbits/sec @.901 ms
+sec 2.62°MBytes 16.9 Mbits/sec 1.059' ms
+sec 2.04 MBytes 27.4 Mbits/sec 1.228 ms
+sec 1.94 MBytes 16.2 Mbits/sec 1.338 ms
+sec 1.86 MBytes 15.6 Mbits/sec 4.211 ms
+sec 2.04. MBytes 17.1 Mbits/sec 1.346 ms
+sec 2.03 MBytes 17:0 Mbits/sec 1.18 ms
+sec 2.05 MBytes 17.2 Mbits/sec 0.911 ms
+sec 2.04 MBytes. 17.1 Mbits/sec 1.282 ms
+
+@8 sec 2.05 MBytes 17.2 Mbits/sec 1.041 ms
+@8 ‘sec 2.03 MBytes 17.0 Mbits/sec 4.319 ms
+@8 sec 2.63.MBytes 17.0 Mbits/sec 1.459 ms
+@@: sec 2.05 MBytes 17.2 Mbits/sec @:907 ms
+@@ sec 1.93.MBytes 16:2 Mbits/sec @.835:ms
+@@ sec 2.04 MBytes 17.1 Mbits/sec @.931 ms
+@@ ‘sec 2.05: MBytes 17.2 Mbits/sec 12.214 ms
+@@ sec 2.03 MBytes 17.@ Mbits/sec 41.315 ms
+@@ sec 2.04 MBytes 17.1. Mbits/sec 1.412 ms
+@8 <ssec 2.04 MBytes 17.1 Mbits/sec 1.359: ms
+@@ ‘sec 2.05 MBytes 17.2-Mbits/sec @.952 ms
+@@ sec 2.02 MBytes 17.0 Mbits/sec 1.208 ms
+e@@ sec 2.04 MBytes 17.1 Mbits/sec ©.89e ms
+@@ ‘sec 2:62 MBytes 16:9 Mbits/sec ©.962.ms
+@8 sec 2.@2.MBytes 17.0 Mbits/sec 12-445 ms
+@0 sec 2.02 MBytes 16.9 Mbits/sec @.977 ms
+@6 sec 2.062 MBytes. 16.9 Mbits/sec @.896 ms
+@@ sec 2.62 MBytes 16.9 Mbits/sec 41.474. ms
+@@ ssec 1.92 MBytes 16/1. Mbits/sec 14.210 ms
+@@ sec 2.05 MBytes 17.2 Mbits/sec 1.600 ms
+@@ sec 1.93 MBytes 416.2 Mbits/sec 1.481 ms
+Transfer Bitrate Jitter
+
+1@ sec 71.8: MBytes 20.0 Mbits/sec @.060. ms
+sec. 255 datagrams received out-of-order
+
+@@ sec 60.3 MBytes 16.9 Mbits/sec 1.481 ms
+
+: \Users\DTC-Serv\Desktop\adb>adb -s R5CRI@6KM7J shell /data/iocal/tmp/iperf3. -c 172.20.1:1. -u -b 20M -R -t 30
+Connecting. to host 172.20.1.1, port 52¢1
+Reverse mode; remote host 172.20:1.1 is: sending
+[ 5] local.172.23.0.113 port 59256 connected to172.2@.1:1 port 5201
+jL ID] Interval
+
+5] .6.00-1.00
+
+Lost/Total Datagrams
+@/15@2 (0%)
+272/1842 (15%)
+272/4856 (415%)
+259/1765 (15%)
+492/1936 (25%)
+273/1863 (15%)
+282/1862 (15%)
+252/1848 (14%)
+2913/1877 (16%)
+242/1833 (13%)
+294/187 (16%)
+263/1840 (14%)
+191/1784 (41%)
+4149/1921 (22%)
+281/1866 (15%)
+265/1857 (14%)
+251/1827. (14%)
+281/187 (415%)
+269/1859 (14%)
+253/1851 (14%)
+269/1842 (15%)
+270/1857 (15%)
+280/1851- (15%)
+295/1867 (16%)
+281/1849 (15%)
+275/1844 (15%)
+3145/1884 (17%)
+352/1846 (19%)
+275/1866 (15%)
+342/1842 (19%)
+
+Lost/Total Datagrams
+@/55815 (@%) -sender
+
+8356/55274 (45
+

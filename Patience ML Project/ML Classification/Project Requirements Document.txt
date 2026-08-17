@@ -1,0 +1,32 @@
+Instructions
+PART A
+Supervised Learning Application
+Problem Statement: Given is a dataset on the employees of an organization. Based on some descriptive attributes it is determined whether the employee will leave the organization or not as per the target variable “Attrition”
+Devise a classification model to classify whether an employee will leave the organization or not.
+The final report must have the flow of a typical ML pipeline straight for Data preparation to model evaluation and model saving.
+Please state clearly any assumptions/ insights you make as you go along the pipeline.
+
+PART B
+Unsupervised Learning Application
+Problem Statement: Given is a dataset that provides the data for an online supermarket. There is no target label.
+Identify similar or dissimilar group of customers based on any clustering algorithm of your choice.
+Perform profiling after you have obtained the clusters specifying the distinctive properties of each cluster.
+Refer to the data definition below:
+• customer: Anonymized customer's id.
+• order: Order id, starting from zero.
+• total_items : The number of items purchased in the order.
+• discount% : The percent of total discount received. For instance, if the customer saves €20 in a €100 order (that is, he had to pay €80), this field will contain a 20.
+• weekday : Day of the week when the order was paid. 1=Monday, 7=Sunday.
+• hour : The hour of the day the purchase was done. From 00 to 23.
+• Categories' partials : Percent of money spent in each of the 8 website's main categories:
+• Food% : Non perishable food, for example: rice, cooking oil, snacks, cookies, sauces, canned food.
+• Fresh% : Fresh and frozen food, for example: fresh tuna, fruits, frozen pizza, salads, meat.
+• Drinks% : All kind of beverages, like: water, juices, wine, alcoholic drinks, milk, soy drinks.
+• Home% : Products for home, from toilet paper to small appliances.
+• Beauty% : Items for cleaning your body and makeup; for example: shampoo, shaving foam, cosmetics.
+• Health% : Medicinal solutions that can be sold in Spain without medic prescription: diet pills, condoms, tooth paste.
+• Baby% : Useful articles if you have a baby: diapers, baby food, baby care.
+• Pets% : Items related with dogs, cats and other pets; like food, toys, sanitary sand.
+
+Data Exploration Documentation
+Files: Part A Dataset, Part B Dataset.

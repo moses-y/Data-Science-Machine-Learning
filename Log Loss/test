@@ -1,0 +1,107 @@
+from pydantic import BaseModel
+
+class Config(BaseModel):
+    n_estimators: int = 158
+    random_state_rf: int = 40
+    random_state_et: int = 42
+    max_iter_lg: int = 150
+    epochs_nn: int = 100
+    batch_size_nn: int = 32
+    learning_rate_nn: float = 0.0001
+    dropout_rate: float = 0.2
+    dense_layer_sizes: list = [300, 200, 100]
+    regularization_l1: float = 0.1
+    optimizer_nn: str = 'adam'
+    noise_stddev: float = 0.01
+    k_neighbors: int = 5
+    num_leaves: int = 66
+    feature_fraction: float = 0.61
+    bagging_fraction: float = 0.54
+    bagging_freq: int = 2
+    learning_rate_lgbm: float = 0.055
+    n_trials_optuna: int = 30
+
+config = Config()
+
+
+#!pip install pytorch-tabnet
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import log_loss
+from lightgbm import LGBMClassifier
+from keras.models import Sequential
+from keras.regularizers import l1
+from keras.layers import Dense, GaussianNoise, Dropout
+from keras.layers import GaussianNoise
+from keras.optimizers import Adam
+from keras.utils import to_categorical
+from pytorch_tabnet.tab_model import TabNetClassifier
+import torch
+import optuna
+import warnings
+warnings.filterwarnings("ignore")
+
+# Data preprocessing
+data = pd.read_csv("train_data_swc.csv").dropna()
+le = LabelEncoder()
+y_train_enc = to_categorical(y_train, label=None)
+y_test_enc = to_categorical(y_test)
+scaler = MinMaxScaler()
+data_scaled = scaler.fit_transform(data.drop('y', axis=1))
+X_train, X_test, y_train, y_test = train_test_split(data_scaled, data['y'], test_size=0.2, random_state=42)
+
+# Model definitions
+rf = RandomForestClassifier(n_estimators=config.n_estimators, random_state=config.random_state_rf)
+et = ExtraTreesClassifier(random_state=config.random_state_et)
+kn = KNeighborsClassifier(n_neighbors=config.k_neighbors)
+lg = LogisticRegression(max_iter=config.max_iter_lg)
+tn = TabNetClassifier()
+
+# Neural network definition
+nn = Sequential([
+    GaussianNoise(config.noise_stddev),
+    Dense(config.dense_layer_sizes[0], activation='softmax', kernel_regularizer=l1(config.regularization_l1)),
+    Dropout(config.dropout_rate),
+    Dense(config.dense_layer_sizes[1], activation='relu', kernel_regularizer=l1(config.regularization_l1)),
+    Dropout(config.dropout_rate),
+    Dense(config.dense_layer_sizes[2], activation='softmax', kernel_regularizer=l1(config.regularization_l1)),
+    Dropout(config.dropout_rate),
+    Dense(y_train_enc.shape[1], activation='softmax')
+])
+nn.compile(optimizer=Adam(config.learning_rate_nn), loss='categorical_crossentropy')
+
+# Train the neural network
+nn.fit(X_train, y_train_enc, epochs=config.epochs_nn, batch_size=config.batch_size_nn, validation_split=0.1)
+
+# Evaluate models
+for model in [rf, et, kn, lg, tn]:
+    model.fit(X_train, y_train)
+    pred_proba = model.predict_proba(X_test)
+    print(f"{model.__class__.__name__} log loss: {log_loss(y_test, pred_proba)}")
+
+def objective(trial):
+    params = {
+        'num_leaves': trial.suggest_int('num_leaves', 20, 300),
+        'boosting_type': 'gbdt',
+        'objective': 'multiclass',
+        'metric': 'multi_logloss',
+        'num_class': len(np.unique(y_train)),
+        'feature_fraction': trial.suggest_uniform('feature_fraction', 0.4, 1.0),
+        'bagging_fraction': trial.suggest_uniform('bagging_fraction', 0.4, 1.0),
+        'bagging_freq': trial.suggest_int('bagging_freq', 1, 7),
+        'learning_rate': trial.suggest_loguniform('learning_rate', 1e-4, 1e-1),
+        'verbose': -1
+    }
+    model = LGBMClassifier(**params)
+    return cross_val_score(model, X_train, y_train_enc, n_jobs=-1, cv=KFold(n_splits=3), scoring='neg_log_loss').mean()
+
+study = optuna.create_study(direction='maximize')
+study.optimize(objective, n_trials=config.n_trials_optuna)
+best_params = study.best_params
+best_lgbm = LGBMClassifier(**best_params)
+best_lgbm.fit(X_train, y_train)

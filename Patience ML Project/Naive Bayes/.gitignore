@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Data, models, and assets
+# These are often large and project-specific.
+# It's good practice to not commit them directly to the repository.
+data/
+models/
+assets/
+
+# IDE / Editor specific
+.vscode/
+.idea/
+.project
+.pydevproject
+.settings/
+
+# OS-specific
+.DS_Store
+Thumbs.db

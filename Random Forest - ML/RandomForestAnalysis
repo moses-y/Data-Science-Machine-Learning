@@ -1,0 +1,282 @@
+import os
+import requests
+import nbformat
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
+
+import pandas as pd
+import numpy as np
+import joblib
+from io import StringIO
+import matplotlib.pyplot as plt
+
+from transformers import GPT2Tokenizer, GPT2LMHeadModel
+import torch
+import webbrowser
+import jinja2
+import markdown
+
+# Path to your model checkpoint
+model_checkpoint_path = "C:\\Users\\moses_y\\OneDrive\\Desktop\\ML Projects\\Transformers\\src\\models\\model_checkpoint_epoch_3.pt"
+
+# Load the pre-trained tokenizer and model
+# Load the tokenizer with left padding
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2", padding_side='left')
+model = GPT2LMHeadModel.from_pretrained("gpt2", state_dict=torch.load(model_checkpoint_path))
+
+# Ensure tokenizer's pad_token is set to eos_token
+tokenizer.pad_token = tokenizer.eos_token
+
+def scan_directory(path):
+    py_files_count = 0
+    nb_files_count = 0
+    
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file.endswith(".py"):
+                py_files_count += 1
+                # Further Python file analysis could be added here
+            elif file.endswith(".ipynb"):
+                nb_files_count += 1
+                nb_path = os.path.join(root, file)
+                nb_analysis(nb_path)
+                
+    print(f"Python files: {py_files_count}, Jupyter Notebooks: {nb_files_count}")
+
+global_summaries = []
+
+def nb_analysis(nb_path):
+    """Analyzes Jupyter Notebook and generates summaries for code and markdown cells."""
+    try:
+        with open(nb_path, 'r', encoding='utf-8') as f:
+            nb = nbformat.read(f, as_version=4)
+            local_summaries = []  # Store summaries for the current notebook
+
+            for i, cell in enumerate(nb['cells']):
+                if cell['cell_type'] in ['code', 'markdown']:
+                    content = cell['source']
+                    if content.strip():  # Ensure cell is not empty
+                        # Generate summary for the cell
+                        inputs = tokenizer.encode_plus(content, return_tensors="pt", max_length=1024, truncation=True, padding="max_length")
+                        outputs = model.generate(
+                            input_ids=inputs['input_ids'],
+                            attention_mask=inputs['attention_mask'],
+                            max_length=1024, 
+                            temperature=0.5,  
+                            top_p=0.9, 
+                            top_k=70,
+                            num_return_sequences=1,
+                            do_sample=True # Enable sampling-based generation
+                        )
+                        summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
+                        # Append summary in structured format
+                        local_summaries.append({
+                            "type": cell['cell_type'],
+                            "index": i + 1,
+                            "summary": summary
+                        })
+
+            global_summaries.extend(local_summaries)  # Add local summaries to global list
+            print(f"Processed {len(local_summaries)} cells from notebook: {nb_path}")
+    except Exception as e:
+        print(f"Error processing notebook {nb_path}: {e}")
+
+def append_to_readme(content, file='README.md'):
+    """Appends content to a README file."""
+    with open(file, 'a') as f:
+        f.write(content + '\n\n')
+
+def generate_markdown_report(project_name, models_data, average_rmse, average_r2, feature_importances_paths, append_to_readme_flag=True):
+    """Generates a markdown report. Optionally appends content to README.md"""
+    # Constructing model performance details from models_data
+    model_performance = "\n".join([
+        f"- Model {model['model_name']}: RMSE = {model['rmse']}, R2 = {model['r2']}" 
+        for model in models_data
+    ])
+    
+    markdown_text = f"""
+# Project Analysis Report - {project_name}
+
+## Model Performance
+- AVG RMSE: {average_rmse}
+- AVG R2 Score: {average_r2}
+{model_performance}
+
+## Feature Importances
+"""
+    for path in feature_importances_paths:
+        markdown_text += f"![Feature Importances]({path})\n\n"
+
+    report_filename = f"{project_name.replace(' ', '_')}_report.md"
+    with open(report_filename, "w") as file:
+        file.write(markdown_text)
+    print(f"Markdown report generated: {report_filename}")
+    
+    if append_to_readme_flag:
+        append_to_readme(markdown_text)
+
+# Custom filter to convert Markdown to HTML
+def markdown_to_html(markdown_text):
+    return markdown.markdown(markdown_text)
+
+# ...
+
+def generate_html_report(project_name, models_data, average_rmse, average_r2, feature_importance_paths, global_summaries, output_filename):
+    # Specify your new title here
+    project_name = "ALX Crop Yield Prediction, Using Combined Feature Analysis and Random Forests"
+
+    template_directory = "C:\\Users\\moses_y\\OneDrive\\Desktop\\Machine Learning Projects"
+    template_name = "report_template.html"
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_directory))
+    env.filters['markdown_to_html'] = markdown_to_html
+    template = env.get_template(template_name)
+
+    images = [os.path.basename(image_path) for image_path in feature_importance_paths]
+
+
+    # Add the narrative sections to the context
+    narrative_context = {
+        "introduction": "In the ever-evolving landscape of data science...",
+        "libraries_core": "The foundation of any data science endeavor...",
+        "optimized_functions_workflow": "The scan_directory function embodies...",
+        "conclusion": "In aggregate, the implemented functionalities exhibit...",
+        # Include other parts of the context as before
+    }
+
+    # Merge the narrative context with the existing context
+    context = {**narrative_context, **{
+        "project_name": project_name,
+        "models_data": models_data,
+        "avg_rmse": average_rmse,
+        "avg_r2": average_r2,
+        "feature_importance_images": images,
+        "summaries": global_summaries
+    }}
+
+    # The rest of your existing code to generate and open the report
+
+
+    output_path = os.path.join(template_directory, output_filename)
+    html_content = template.render(context)
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+
+    print(f"HTML report generated: {output_path}")
+    webbrowser.open(f'file://{output_path}')
+
+
+def train_and_evaluate_rf_models(dataset_url, target_column, estimators_list):
+    results = {}
+    try:
+        response = requests.get(dataset_url)
+        response.raise_for_status()
+        df = pd.read_csv(StringIO(response.text))
+        df = pd.get_dummies(df, drop_first=True)
+        X = df.drop(columns=[target_column])
+        y = df[target_column]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        feature_importances = []
+        for n_estimators in estimators_list:
+            model = RandomForestRegressor(n_estimators=n_estimators, random_state=42)
+            model.fit(X_train, y_train)
+            predictions = model.predict(X_test)
+            rmse = np.sqrt(mean_squared_error(y_test, predictions))
+            r2 = r2_score(y_test, predictions)
+
+            average_rmse = np.mean([result['RMSE'] for result in results.values()])
+            average_r2 = np.mean([result['R2'] for result in results.values()])
+            
+            model_filename = f"random_forest_{n_estimators}_estimators.joblib"
+            joblib.dump(model, model_filename)
+
+            feature_importances.append(model.feature_importances_)
+            feature_importances_filename = f'feature_importances_{n_estimators}_trees.png'
+            plt.figure(figsize=(10, 6))
+            plt.title(f"Feature importances for {n_estimators} trees")
+            indices = np.argsort(model.feature_importances_)[::-1]
+            plt.bar(range(X_train.shape[1]), model.feature_importances_[indices], align="center")
+            plt.xticks(range(X_train.shape[1]), X_train.columns[indices], rotation=90)
+            plt.tight_layout()
+            plt.savefig(feature_importances_filename)
+            plt.close()
+
+def plot_combined_feature_importances(feature_importances, feature_names):
+    # Assuming feature_importances is a list of numpy arrays
+    avg_importance = np.mean(np.array(feature_importances), axis=0)
+    indices = np.argsort(avg_importance)[::-1]
+    plt.figure(figsize=(10, 6))
+    plt.title("Combined Feature Importances")
+    plt.bar(range(len(feature_names)), avg_importance[indices], color='r', align='center')
+    plt.xticks(range(len(feature_names)), np.array(feature_names)[indices], rotation='vertical')
+    plt.tight_layout()
+    plt.savefig("combined_feature_importances.png")
+    plt.close()
+    plot_combined_feature_importances(feature_importances, X_train.columns.tolist())
+                
+    return results[n_estimators] = {'RMSE': rmse, 'R2': r2, 'Feature Importance Plot': feature_importances_filename, 'Model Filename': model_filename}
+
+
+    return results, average_rmse, average_r2
+
+    except requests.RequestException as e:
+    print(f"Failed to download dataset: {e}")
+    return None
+
+def calculate_averages(results):
+    average_rmse = np.mean([result['RMSE'] for result in results.values()])
+    average_r2 = np.mean([result['R2'] for result in results.values()])
+    return average_rmse, average_r2
+
+def get_feature_importances_paths(estimators_list):
+    return [f'feature_importances_{n}_trees.png' for n in estimators_list]
+
+def main():
+    # The path to the project directory
+    project_path = r"C:\Users\moses_y\OneDrive\Desktop\ML Projects\alx\Data science\Machine Learning\Random Forests"
+    # GitHub URL of the dataset
+    github_dataset_url = 'https://raw.githubusercontent.com/Explore-AI/Public-Data/master/Data/Python/Crop_yield.csv'
+    # Name of the target column in the dataset
+    target_column = 'Yield'
+    estimators_list = [50, 100, 200]
+    
+    try:
+        scan_directory(project_path)
+        results = train_and_evaluate_rf_models(github_dataset_url, target_column, estimators_list)
+        
+        if results:
+            average_rmse, average_r2 = calculate_averages(results)
+            feature_importances_paths = get_feature_importances_paths(estimators_list)
+            feature_importances_paths.append("combined_feature_importances.png")
+
+            models_data = [
+                {
+                    "model_name": f"Random Forest with {n} Trees",
+                    "rmse": results[n]['RMSE'],
+                    "r2": results[n]['R2'],
+                    "plot_path": results[n]['Feature Importance Plot']
+                } for n in estimators_list
+            ]
+            
+            # Check if global_summaries is not empty before generating the report
+            if not global_summaries:
+                print("Warning: No summaries generated.")
+            else:
+                generate_html_report(
+                    "Random Forest Analysis and ALX Notebook Summaries",
+                    models_data, 
+                    average_rmse,
+                    average_r2,
+                    feature_importances_paths,
+                    global_summaries,
+                    "final_report.html"
+                )
+        else:
+            print("No results to report.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
