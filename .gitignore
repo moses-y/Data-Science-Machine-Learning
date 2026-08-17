@@ -55,15 +55,12 @@ fastf1_cache/
 .vscode/
 .idea/
 
-# Third-party course material (textbooks, slides, workbooks) — not my work,
-# and not ours to redistribute. Notebooks and code are kept.
-*.pdf
-*.pptx
-*.docx
-*.xlsx
-*.xls
-*.pbix
-*.sql
+# Course slides, workbooks, and student packs are kept alongside the notebooks
+# so each lesson folder stays self-contained. Two exceptions, held back
+# deliberately: a commercially published ebook, and another student's
+# named milestone submission.
+Data Science ALX/**/storytelling-with-data-cole-nussbaumer-knaflic.pdf
+Data Science ALX/**/Milestone04_Anthony_Lokiyar_*.pdf
 
 # Generated Plotly HTML exports — each bundles ~3.5MB of plotly.js.
 # The notebooks in the same folder regenerate them.
