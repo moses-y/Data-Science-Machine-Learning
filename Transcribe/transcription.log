@@ -1,0 +1,7 @@
+
+INFO:root:Using device: cpu
+INFO:root:Downloaded video file path: D:\Transcribe\temp_video
+ERROR:root:Error in downloading and converting audio: AudioClip.write_audiofile() got an unexpected keyword argument 'nchannels'
+INFO:root:Using device: cpu
+INFO:root:Downloaded video file path: D:\Transcribe\temp_video
+ERROR:root:Error in downloading and converting audio: 'AudioFileClip' object has no attribute 'set_channels'

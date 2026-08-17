@@ -1,0 +1,17 @@
+Sentiment Analysis Summary for All Documents
+
+Sentiment analysis for JMH 002511.docx
+Overall sentiment scores: {'neg': 0.042, 'neu': 0.717, 'pos': 0.241, 'compound': 0.998}
+
+Sentiment analysis for JMH 002512.docx
+Overall sentiment scores: {'neg': 0.03, 'neu': 0.747, 'pos': 0.223, 'compound': 0.9997}
+
+Sentiment analysis for JMH 002513.docx
+Overall sentiment scores: {'neg': 0.059, 'neu': 0.719, 'pos': 0.221, 'compound': 0.9991}
+
+Sentiment analysis for JMH 002514.docx
+Overall sentiment scores: {'neg': 0.04, 'neu': 0.763, 'pos': 0.197, 'compound': 0.9997}
+
+Sentiment analysis for JMH 002515.docx
+Overall sentiment scores: {'neg': 0.044, 'neu': 0.748, 'pos': 0.208, 'compound': 1.0}
+
